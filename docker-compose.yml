@@ -1,0 +1,32 @@
+version: "3.9"
+services:
+  web:
+    build: .
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./src:/code
+    depends_on: 
+      - db
+    environment:
+      - FLASK_ENV=development
+      - DB_USER=subeky
+      - DB_PASSWORD=subeky
+      - DB_HOST=db
+      - DB_DATABASE=subeky
+  db:
+    image: mysql
+    ports:
+      - 3306:3306
+    volumes:
+      - ./mysql/mysql_data:/var/lib/mysql
+      - ./mysql/sqls:/docker-entrypoint-initdb.d
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=subeky
+      - MYSQL_USER=subeky
+      - MYSQL_PASSWORD=subeky
+  adminer:
+    image: adminer
+    ports:
+      - 8080:8080
